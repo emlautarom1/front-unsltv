@@ -5,18 +5,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { ContentSliderComponent } from './content-slider/content-slider.component';
+import { ContentHeroComponent } from './content-hero/content-hero.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 import { SwiperModule } from 'swiper/angular';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContentSliderComponent
+    ContentSliderComponent,
+    ContentHeroComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SwiperModule
+    SwiperModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
