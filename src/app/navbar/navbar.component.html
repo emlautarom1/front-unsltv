@@ -1,4 +1,4 @@
-<header>
+<header [ngClass]="{ 'bg-black': didScroll | async }">
     <div class="left-container">
         <div class="logo-container">
             <a href="#"><img class="logo" src="assets/branding/logo.png" alt="UNSL TV" srcset=""> </a>
@@ -17,7 +17,6 @@
             <button type="submit" class="search-button">
                 <fa-icon [icon]="searchIcon"></fa-icon>
             </button>
-
         </div>
     </div>
 </header>

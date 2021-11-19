@@ -11,9 +11,15 @@ header {
     align-items: center;
     padding: 0 1rem;
 
-    background-color: #111;
-
     z-index: 2;
+
+    transition: all 150ms;
+    background: linear-gradient(0deg, transparent 0%, rgba(0, 0, 0, 0.3) 50%);
+
+    &.bg-black {
+        transition: all 150ms;
+        background: #111;
+    }
 }
 
 .left-container {
