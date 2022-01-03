@@ -22,13 +22,17 @@
     font-weight: bold;
 
     .title {
-        font-size: 3rem;
+        font-size: 4rem;
         text-transform: uppercase;
     }
 
     .description,
     .title {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .description {
+        line-height: 150%;
     }
 }
 
