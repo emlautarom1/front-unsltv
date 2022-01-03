@@ -2,10 +2,19 @@
     <h2 class="title">{{ contentName }}</h2>
 
     <!-- TODO: Cantidad de slides deberia depender del tamaño de la pantalla -->
-    <swiper [navigation]="true" [slidesPerView]="5" [spaceBetween]="10" [loop]="true" [loopAdditionalSlides]="5" class="swiper">
+    <swiper [navigation]="true" [slidesPerView]="5" [spaceBetween]="10" [loop]="true" [loopAdditionalSlides]="5"
+        class="swiper">
 
-        <ng-template swiperSlide *ngFor="let url of urls">
-            <a href="#"><img [src]="url"> </a>
+        <ng-template swiperSlide *ngFor="let content of mediaContent">
+            <a href="#">
+                <div class="slide-container">
+                    <img [src]="content.thumbnail">
+                    <div class="slide-content">
+                        <h4 class="slide-title">{{ content.title }}</h4>
+                        <p class="slide-description">{{ content.description }}</p>
+                    </div>
+                </div>
+            </a>
         </ng-template>
 
     </swiper>

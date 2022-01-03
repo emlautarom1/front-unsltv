@@ -11,15 +11,23 @@ SwiperCore.use([Navigation]);
 })
 export class ContentSliderComponent {
   @Input() contentName: string = "";
-  urls: string[] = [
-    "assets/thumbnails/small-movie1.jpg"
-    , "assets/thumbnails/small-movie2.jpg"
-    , "assets/thumbnails/small-movie3.jpg"
-    , "assets/thumbnails/small-movie4.jpg"
-    , "assets/thumbnails/small-movie5.jpg"
-    , "assets/thumbnails/small-movie6.jpg"
-    , "assets/thumbnails/small-movie7.jpg"
-    , "assets/thumbnails/small-movie8.jpg"
+
+  private sampleContent =
+    {
+      thumbnail: "assets/thumbnails/small-movie1.jpg",
+      title: "La Casa de Papel",
+      description: "Una banda organizada de ladrones se propone cometer el atraco del siglo en la Fábrica Nacional de Moneda y Timbre. Cinco meses de preparación quedarán reducidos a once días para poder llevar a cabo con éxito el gran golpe."
+    }
+
+  mediaContent = [
+    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie1.jpg" },
+    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie2.jpg" },
+    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie3.jpg" },
+    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie4.jpg" },
+    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie5.jpg" },
+    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie6.jpg" },
+    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie7.jpg" },
+    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie8.jpg" },
   ]
 
   constructor() { }

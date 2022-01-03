@@ -4,7 +4,7 @@
 .content-slider-container {
     h2 {
         color: #fff;
-        padding: 0 0 1rem 1rem;
+        padding: 0 0 1rem 2rem;
     }
 }
 
@@ -15,14 +15,40 @@
     margin-bottom: 4rem;
 }
 
-.swiper-slide {
-    text-align: center;
-    transition: transform 150ms;
+.slide-container {
+    position: relative;
+    overflow: hidden;
 
     img {
         max-width: 100%;
         height: auto;
     }
+}
+
+.slide-content {
+    position: absolute;
+    top: 0;
+    height: 100%;
+
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.5rem;
+
+    opacity: 0;
+    transition: all 250ms;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &:hover {
+        opacity: 1;
+        background-color: rgba(0, 0, 0, 0.75);
+    }
+}
+
+.swiper-slide {
+    transition: transform 150ms;
 }
 
 .swiper:focus-within .swiper-slide,
