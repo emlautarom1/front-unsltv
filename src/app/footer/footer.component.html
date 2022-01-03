@@ -1,7 +1,19 @@
 <div class="footer">
-    <ul>
-        <li>UNSL TV</li>
-        <li>San Luis, Argentina</li>
-        <li>2021</li>
-    </ul>
+    <div class="social-networks">
+        <fa-icon *ngFor="let icon of socialNetworks" [icon]="icon" size="lg"></fa-icon>
+    </div>
+    <div class="institutional">
+        <h3>Información Institucional</h3>
+        <ul>
+            <li><b>Teléfono:</b> +54 (0266) 4520300</li>
+            <li><b>Dirección:</b> Ejército de Los Andes 950, San Luis, Argentina</li>
+        </ul>
+    </div>
+    <div class="contact">
+        <h3>Contacto</h3>
+        <ul>
+            <li><b>Teléfono:</b> +54 (0266) 4520300 - Interno: 6167</li>
+            <li><b>Dirección:</b> Chacabuco y Pedernera, 1er Piso Ala Sur, San Luis, Argentina</li>
+        </ul>
+    </div>
 </div>
