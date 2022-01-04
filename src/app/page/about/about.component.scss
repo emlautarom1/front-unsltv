@@ -1,0 +1,49 @@
+.about-us {
+    margin-top: 80px;
+
+    h1,
+    h2 {
+        margin-bottom: 1.5rem;
+    }
+
+    p {
+        margin-bottom: 1rem;
+        line-height: 1.5rem;
+    }
+}
+
+.section {
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5rem;
+}
+
+.title {
+    padding: 1rem 2rem;
+    display: inline-block;
+    background-color: #74c7cd;
+}
+
+.unsltv {
+    text-align: end;
+    color: white;
+
+    h1 {
+        clip-path: polygon(0 0, 100% 10%, 95% 85%, 10% 100%);
+    }
+
+    h2 {
+        clip-path: polygon(0 10%, 100% 0, 90% 100%, 10% 90%);
+    }
+}
+
+.unsl {
+    text-align: start;
+    background-color: white;
+
+    h1 {
+        clip-path: polygon(0 10%, 100% 0, 95% 100%, 5% 85%);
+    }
+}
