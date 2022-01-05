@@ -1,0 +1,36 @@
+.card {
+    width: 400px;
+    height: 395px;
+    display: flex;
+    flex-direction: column;
+
+    color: white;
+    background-color: #000;
+
+    img {
+        width: 100%;
+    }
+}
+
+.date {
+    opacity: 0.5;
+}
+
+.text {
+    min-height: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    p {
+        // Multiline ellipsis: https://kiranworkspace.com/ellipsis-to-multiline-text-in-css/
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: normal;
+        display: -webkit-box;
+        line-height: 1.3rem;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+    }
+}

@@ -1,0 +1,22 @@
+<div class="search-results">
+    <div class="header">
+        <div class="title">
+            <h1>Resultados</h1>
+        </div>
+        <div class="filters">
+            <select name="order-by" id="order-by">
+                <option hidden selected>Ordenar por</option>
+            </select>
+            <select name="date" id="date">
+                <option hidden selected>Fecha</option>
+            </select>
+            <select name="duration" id="duration">
+                <option hidden selected>Duración</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="result-grid">
+        <app-single-result *ngFor="let _ of searchResults"></app-single-result>
+    </div>
+</div>

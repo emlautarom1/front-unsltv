@@ -1,0 +1,48 @@
+.search-results {
+    margin-top: 80px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    h1 {
+        color: white;
+    }
+}
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.result-grid {
+    max-width: 100%;
+    margin: 2rem auto;
+
+    // TODO: Hacer Grid responsive
+    grid-template-columns: repeat(4, 1fr);
+    display: grid;
+    grid-gap: 2rem;
+}
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    select {
+        height: fit-content;
+        background-color: #575757;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        color: white;
+    }
+}

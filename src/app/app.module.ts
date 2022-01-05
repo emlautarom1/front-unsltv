@@ -13,6 +13,8 @@ import { SwiperModule } from 'swiper/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AboutComponent } from './page/about/about.component';
 import { HomeComponent } from './page/home/home.component';
+import { SearchResultsComponent } from './page/search-results/search-results.component';
+import { SingleResultComponent } from './page/search-results/single-result/single-result.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { HomeComponent } from './page/home/home.component';
     ContentSliderComponent,
     ContentHeroComponent,
     AboutComponent,
+    SearchResultsComponent,
+    SingleResultComponent,
   ],
   imports: [
     BrowserModule,
