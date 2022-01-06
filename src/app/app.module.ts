@@ -15,6 +15,7 @@ import { AboutComponent } from './page/about/about.component';
 import { HomeComponent } from './page/home/home.component';
 import { SearchResultsComponent } from './page/search-results/search-results.component';
 import { SingleResultComponent } from './page/search-results/single-result/single-result.component';
+import { WatchComponent } from './page/watch/watch.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { SingleResultComponent } from './page/search-results/single-result/singl
     AboutComponent,
     SearchResultsComponent,
     SingleResultComponent,
+    WatchComponent,
   ],
   imports: [
     BrowserModule,
