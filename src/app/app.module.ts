@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SwiperModule } from 'swiper/angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -34,6 +35,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     SwiperModule,
     FontAwesomeModule
   ],

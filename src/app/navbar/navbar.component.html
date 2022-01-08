@@ -1,24 +1,26 @@
 <header [ngClass]="{ 'bg-black': didScroll | async }">
     <div class="left-container">
         <div class="logo-container">
-            <a href="#"><img class="logo" src="assets/branding/logo.png" alt="UNSL TV" srcset=""> </a>
+            <a routerLink="/"><img class="logo" src="assets/branding/logo.png" alt="UNSL TV" srcset=""> </a>
         </div>
         <nav class="nav">
             <ul>
-                <li><a href="#">Inicio</a></li>
-                <li><a href="#">Institucional</a></li>
-                <li><a href="#">En Vivo</a></li>
-                <li><a href="#">Nosotrxs</a></li>
+                <li><a routerLink="/">Inicio</a></li>
+                <li><a routerLink="/search/institucional">Institucional</a></li>
+                <li><a routerLink="/search/live">En Vivo</a></li>
+                <li><a routerLink="/about">Nosotrxs</a></li>
             </ul>
         </nav>
     </div>
 
     <div class="right-container">
         <div class="search">
-            <input type="text" name="search" id="search-input">
-            <button type="submit" class="search-button">
-                <fa-icon [icon]="searchIcon"></fa-icon>
-            </button>
+            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+                <input type="text" name="search" id="query" formControlName="query">
+                <button type="submit" class="search-button">
+                    <fa-icon [icon]="searchIcon"></fa-icon>
+                </button>
+            </form>
         </div>
     </div>
 </header>
