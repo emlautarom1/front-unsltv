@@ -1,4 +1,4 @@
-<div class="search-results">
+<div class="search">
     <div class="header">
         <div class="title">
             <h1>Resultados</h1>
@@ -17,6 +17,6 @@
     </div>
 
     <div class="result-grid">
-        <app-single-result *ngFor="let _ of searchResults"></app-single-result>
+        <app-media-card *ngFor="let _ of searchResults"></app-media-card>
     </div>
 </div>

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchResultsComponent } from './search-results.component';
+import { MediaCardComponent } from './media-card.component';
 
-describe('SearchResultsComponent', () => {
-  let component: SearchResultsComponent;
-  let fixture: ComponentFixture<SearchResultsComponent>;
+describe('MediaCardComponent', () => {
+  let component: MediaCardComponent;
+  let fixture: ComponentFixture<MediaCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SearchResultsComponent ]
+      declarations: [ MediaCardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchResultsComponent);
+    fixture = TestBed.createComponent(MediaCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
