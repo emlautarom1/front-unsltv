@@ -1,12 +1,10 @@
 <div class="card">
-    <img src="assets/thumbnails/small-movie6.jpg" alt="thumbnail">
-    <div class="text">
-        <h3 class="title">La Casa de Papel</h3>
-        <h5 class="date">28/08/2017 - Entretenimiento</h5>
-        <p class="description">
-            Una banda organizada de ladrones se propone cometer el atraco del siglo en la Fábrica Nacional de Moneda y
-            Timbre. Cinco meses de preparación quedarán reducidos a once días para poder llevar a cabo con éxito el gran
-            golpe.
-        </p>
-    </div>
+    <a [routerLink]="['/watch', id]">
+        <img src="assets/thumbnails/small-movie6.jpg" alt="thumbnail">
+        <div class="text">
+            <h3 class="title">{{ title }}</h3>
+            <h5 class="date">{{ date }} &mdash; {{ category }}</h5>
+            <p class="description">{{ description }}</p>
+        </div>
+    </a>
 </div>
