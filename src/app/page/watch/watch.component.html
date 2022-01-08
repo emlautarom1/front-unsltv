@@ -11,27 +11,14 @@
         <div class="details">
             <div class="metadata">
                 <span class="date-category">
-                    13/06/2021
+                    {{ (content | async).date }} &mdash; {{ (content | async).category }}
                 </span>
                 <span class="viewcount">
-                    7.893.163 visualizaciones
+                    {{ (content | async).views }} visualizaciones
                 </span>
             </div>
             <div class="description">
-                <p>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Obcaecati, ea error iusto quas at alias
-                    numquam quia accusamus dolore est reprehenderit iste rerum saepe deserunt aut et aliquam commodi
-                    ipsa?
-                    Sit magni numquam quis alias deserunt consequatur pariatur dolores provident ex expedita beatae
-                    soluta excepturi totam, necessitatibus ipsum commodi voluptatem odio ipsa a. Consequatur porro in
-                    debitis, incidunt tenetur asperiores!
-                    Sed, suscipit voluptatem esse optio deleniti quae fugiat dignissimos alias eum delectus debitis, ut
-                    consequuntur cumque dolor sint vitae deserunt excepturi! Magni beatae numquam corporis debitis
-                    impedit a pariatur consequatur.
-                    Itaque nostrum tenetur numquam cumque eum cum sapiente est velit ducimus? Ullam dolorum amet et
-                    consequuntur sed, alias excepturi optio, fugiat minima laborum eaque delectus ipsum eligendi
-                    repellendus asperiores corrupti.
-                </p>
+                <p>{{ (content | async).description }}</p>
             </div>
             <span class="view-more">
                 <a href="#">Ver Mas</a>
@@ -42,6 +29,8 @@
     <h2>Tal vez te interese...</h2>
 
     <div class="cards">
-        <app-media-card *ngFor="let _ of [0,0,0,0]"></app-media-card>
+        <app-media-card *ngFor="let related of relatedContent | async" [id]="related.id" [title]="related.title"
+            [category]="related.category" [date]="related.date" [thumbnail]="related.thumbnail"
+            [description]="related.description"></app-media-card>
     </div>
 </div>
