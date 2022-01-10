@@ -1,16 +1,16 @@
 <div class="content-slider-container">
-    <h2 class="title">{{ contentName }}</h2>
+    <h1 class="title">{{ contentName }}</h1>
 
     <!-- TODO: Cantidad de slides deberia depender del tamaño de la pantalla -->
-    <swiper [navigation]="true" [slidesPerView]="5" [spaceBetween]="10" [loop]="true" [loopAdditionalSlides]="5"
-        class="swiper">
+    <!-- TODO: 3.7 slides para 720p, 5.7 slides para 1080p -->
+    <swiper [navigation]="true" [slidesPerView]="5.7" [spaceBetween]="20" [loop]="true" class="swiper" [centeredSlides]="true" [initialSlide]="3">
 
         <ng-template swiperSlide *ngFor="let content of mediaContent">
             <a href="#">
                 <div class="slide-container">
                     <img [src]="content.thumbnail">
                     <div class="slide-content">
-                        <h4 class="slide-title">{{ content.title }}</h4>
+                        <h3 class="slide-title">{{ content.title }}</h3>
                         <p class="slide-description">{{ content.description }}</p>
                     </div>
                 </div>

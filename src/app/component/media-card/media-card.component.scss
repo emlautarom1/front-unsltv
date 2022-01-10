@@ -29,12 +29,12 @@ a {
     gap: 0.5rem;
 
     p {
+        line-height: 1.3rem;
         // Multiline ellipsis: https://kiranworkspace.com/ellipsis-to-multiline-text-in-css/
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: normal;
         display: -webkit-box;
-        line-height: 1.3rem;
         -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
     }
