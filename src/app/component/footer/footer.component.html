@@ -1,6 +1,8 @@
 <div class="footer">
     <div class="social-networks">
-        <fa-icon *ngFor="let icon of socialNetworks" [icon]="icon" size="lg"></fa-icon>
+        <a *ngFor="let net of socialNetworks" [href]="net.url">
+            <fa-icon [icon]="net.icon" size="lg"></fa-icon>
+        </a>
     </div>
     <div class="institutional">
         <h3>Información Institucional</h3>

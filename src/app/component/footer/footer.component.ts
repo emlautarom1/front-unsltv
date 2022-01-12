@@ -8,10 +8,10 @@ import { faFacebookF, faInstagram, faTwitter, faYoutube } from '@fortawesome/fre
 })
 export class FooterComponent {
   socialNetworks = [
-    faFacebookF
-    , faInstagram
-    , faTwitter
-    , faYoutube
+    { icon: faFacebookF, url: "https://www.facebook.com/unsltv/" },
+    { icon: faInstagram, url: "https://www.instagram.com/unsltv/" },
+    { icon: faTwitter, url: "https://twitter.com/unsltv" },
+    { icon: faYoutube, url: "https://www.youtube.com/channel/UCZZWwoQL1ZpRU-8hdsrUpew" }
   ]
 
   constructor() { }
