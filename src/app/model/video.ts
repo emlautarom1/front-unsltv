@@ -18,6 +18,7 @@ export interface Video {
         channelTitle: string,
         videoOwnerChannelTitle: string,
         videoOwnerChannelId: string,
+        categoryId?: string,
         playlistId: string,
         position: number,
         resourceId: {
@@ -34,5 +35,12 @@ export interface Video {
     },
     status: {
         privacyStatus: string
+    },
+    statistics?: {
+        viewCount: number,
+        likeCount: number,
+        dislikeCount: number,
+        favoriteCount: number,
+        commentCount: number
     }
 }
