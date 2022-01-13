@@ -1,13 +1,9 @@
-<div class="hero">
+<div class="hero" [ngStyle]="backgroundStyle | async">
     <div class="info">
         <div class="title">
-            La Casa de Papel
+            {{ (featuredVideo | async)?.snippet?.title }}
         </div>
-        <div class="description">
-            Una banda organizada de ladrones se propone cometer el atraco del siglo en la Fábrica Nacional de Moneda
-            y Timbre. Cinco meses de preparación quedarán reducidos a once días para poder llevar a cabo con éxito
-            el gran golpe.
-        </div>
+        <div class="description">{{ (featuredVideo | async)?.snippet?.description }}</div>
         <div class="play-now">
             <button>
                 <fa-icon [icon]="faPlayCircle" size="lg"></fa-icon>
