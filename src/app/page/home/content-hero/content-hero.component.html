@@ -5,7 +5,7 @@
         </div>
         <div class="description">{{ (featuredVideo | async)?.snippet?.description }}</div>
         <div class="play-now">
-            <button>
+            <button [routerLink]="['/watch', (featuredVideo | async)?.contentDetails?.videoId]">
                 <fa-icon [icon]="faPlayCircle" size="lg"></fa-icon>
                 Ver Ahora
             </button>
