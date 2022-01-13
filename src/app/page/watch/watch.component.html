@@ -1,24 +1,22 @@
 <div class="watch">
-    <h1>Avatar Frontiers of Pandora</h1>
+    <h1>{{ (video | async)?.snippet?.title }}</h1>
 
     <div class="player-container">
         <div class="yt-player">
-            <iframe width="1280" height="720" src="https://www.youtube.com/embed/X40Tr3Q-BvE"
-                title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+            <iframe width="1280" height="720" [src]="videoURL | async" frameborder="0" allowfullscreen></iframe>
         </div>
         <div class="details">
             <div class="metadata">
                 <span class="date-category">
-                    {{ (content | async).date }} &mdash; {{ (content | async).category }}
+                    {{ (video | async)?.snippet?.publishedAt | date }} &mdash; {{ (video | async)?.snippet?.categoryId |
+                    youtubeCategory }}
                 </span>
                 <span class="viewcount">
-                    {{ (content | async).views }} visualizaciones
+                    {{ (video | async)?.statistics?.viewCount }} visualizaciones
                 </span>
             </div>
             <div class="description">
-                <p>{{ (content | async).description }}</p>
+                <p>{{ (video | async)?.snippet?.description }}</p>
             </div>
             <span class="view-more">
                 <a href="#">Ver Mas</a>
