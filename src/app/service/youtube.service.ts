@@ -36,12 +36,19 @@ export class YoutubeService {
     return of(this._sampleArrayContent());
   }
 
-  findByID(id: string): Observable<any> {
-    return of(this._sampleSingleContent());
-  }
-
   findRelatedTo(id: string): Observable<any[]> {
     return of(this._sampleArrayContent())
+  }
+
+  getVideoByID(id: string): Observable<Video> {
+    let url = "https://youtube.googleapis.com/youtube/v3/videos";
+    let params = new HttpParams()
+      .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
+      .set("part", "snippet,contentDetails,statistics")
+      .set("id", id);
+    return this.http.get(url, { params }).pipe(
+      map((response: any) => response.items[0])
+    )
   }
 
   getVideosForPlaylist(playlistID: string, maxResults: number): Observable<Video[]> {
