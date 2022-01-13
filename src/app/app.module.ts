@@ -19,6 +19,7 @@ import { WatchComponent } from './page/watch/watch.component';
 import { NotFoundComponent } from './page/not-found/not-found.component';
 import { SearchComponent } from './page/search/search.component';
 import { LocalDatePipe } from './pipe/local-date.pipe';
+import { YoutubeCategoryPipe } from './pipe/youtube-category.pipe';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { LocalDatePipe } from './pipe/local-date.pipe';
     MediaCardComponent,
     WatchComponent,
     NotFoundComponent,
-    LocalDatePipe
+    LocalDatePipe,
+    YoutubeCategoryPipe,
   ],
   imports: [
     BrowserModule,
