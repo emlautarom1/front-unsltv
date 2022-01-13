@@ -1,8 +1,10 @@
 @import "~swiper/css";
 @import "~swiper/css/navigation";
+@import "src/mixins.scss";
 
 .content-slider-container {
     .title {
+        text-transform: capitalize;
         color: #fff;
         padding: 0 0 2rem 2rem;
     }
@@ -16,20 +18,19 @@
 }
 
 .slide-container {
-    position: relative;
+    height: 175px;
     overflow: hidden;
+    background-position: center;
+    background-size: cover;
 
-    img {
-        max-width: 100%;
-        height: auto;
+    a {
+        color: inherit;
+        text-decoration: inherit;
     }
 }
 
 .slide-content {
-    position: absolute;
-    top: 0;
     height: 100%;
-
     color: white;
     padding: 1rem;
 
@@ -43,17 +44,14 @@
 
     h3 {
         margin-bottom: 0.5rem;
+
+        @include line-clamp(2);
     }
 
     p {
         font-size: 14px;
 
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: normal;
-        display: -webkit-box;
-        -webkit-line-clamp: 6;
-        -webkit-box-orient: vertical;
+        @include line-clamp(4);
     }
 }
 

@@ -1,5 +1,9 @@
-import { Component, Input, ViewEncapsulation } from "@angular/core";
-import SwiperCore, { Mousewheel, Navigation } from "swiper";
+import { Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
+import { Observable } from "rxjs";
+import { Playlist } from "src/app/model/playlist";
+import { Video } from "src/app/model/video";
+import { YoutubeService } from "src/app/service/youtube.service";
+import SwiperCore, { Navigation } from "swiper";
 
 SwiperCore.use([Navigation]);
 
@@ -9,26 +13,19 @@ SwiperCore.use([Navigation]);
   styleUrls: ['./content-slider.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ContentSliderComponent {
-  @Input() contentName: string = "";
+export class ContentSliderComponent implements OnInit {
+  @Input() playlist!: Playlist;
 
-  private sampleContent =
-    {
-      thumbnail: "assets/thumbnails/small-movie1.jpg",
-      title: "La Casa de Papel",
-      description: "Una banda organizada de ladrones se propone cometer el atraco del siglo en la Fábrica Nacional de Moneda y Timbre. Cinco meses de preparación quedarán reducidos a once días para poder llevar a cabo con éxito el gran golpe."
-    }
+  videos!: Observable<Video[]>;
 
-  mediaContent = [
-    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie1.jpg" },
-    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie2.jpg" },
-    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie3.jpg" },
-    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie4.jpg" },
-    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie5.jpg" },
-    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie6.jpg" },
-    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie7.jpg" },
-    { ...this.sampleContent, thumbnail: "assets/thumbnails/small-movie8.jpg" },
-  ]
+  constructor(private youtube: YoutubeService) { }
 
-  constructor() { }
+  ngOnInit(): void {
+    this.videos = this.youtube.getVideosForPlaylist(this.playlist.id, 25);
+  }
+
+  backgroundImage(url?: string) {
+    // TODO: Utilizar un placeholder real
+    return { "background-image": `url(${url ?? "assets/thumbnails/small-movie1.jpg"})` }
+  }
 }

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Playlist } from 'src/app/model/playlist';
+import { YoutubeService } from 'src/app/service/youtube.service';
 
 @Component({
   selector: 'app-home',
@@ -6,24 +9,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  categories = [
-    "Estrenos"
-    // , "Te recomendamos"
-    // , "Ficción"
-    // , "Cortitos y al pie"
-    // , "Humor"
-    // , "Música"
-    // , "Existenciales"
-    // , "Entrevistas"
-    // , "Arte"
-    // , "Animación"
-    // , "Comunidad"
-    // , "Amigos"
-  ];
+  playlists!: Observable<Playlist[]>;
 
-  constructor() { }
+  constructor(private youtube: YoutubeService) { }
 
   ngOnInit(): void {
+    this.playlists = this.youtube.getPlaylists(1);
   }
 
 }
