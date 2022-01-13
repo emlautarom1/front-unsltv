@@ -1,3 +1,11 @@
+type Resolutions = "default" | "high" | "maxres" | "medium" | "standard"
+type Thumbnail = {
+    url: string,
+    width: number,
+    height: number,
+}
+type Thumbnails = Partial<Record<Resolutions, Thumbnail>>
+
 export interface Video {
     etag: string,
     id: string,
@@ -6,13 +14,7 @@ export interface Video {
         channelId: string,
         title: string,
         description: string,
-        thumbnails: {
-            high: {
-                url: string,
-                width: number,
-                height: number,
-            }
-        },
+        thumbnails: Thumbnails,
         channelTitle: string,
         videoOwnerChannelTitle: string,
         videoOwnerChannelId: string,
