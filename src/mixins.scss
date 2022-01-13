@@ -1,0 +1,10 @@
+@mixin line-clamp($n) {
+    // Multiline ellipsis: https://kiranworkspace.com/ellipsis-to-multiline-text-in-css/
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: $n;
+    -webkit-box-orient: vertical;
+}

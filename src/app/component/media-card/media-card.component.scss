@@ -1,3 +1,5 @@
+@import "src/mixins.scss";
+
 .card {
     width: 400px;
     height: 395px;
@@ -30,12 +32,7 @@ a {
 
     p {
         line-height: 1.3rem;
-        // Multiline ellipsis: https://kiranworkspace.com/ellipsis-to-multiline-text-in-css/
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: normal;
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
+
+        @include line-clamp(4);
     }
 }

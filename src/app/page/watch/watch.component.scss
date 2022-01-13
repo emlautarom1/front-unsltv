@@ -1,3 +1,5 @@
+@import "src/mixins.scss";
+
 .watch {
     margin-top: 80px;
     padding: 2rem;
@@ -38,12 +40,8 @@ h1 {
         .description {
             p {
                 line-height: 1.3rem;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: normal;
-                display: -webkit-box;
-                -webkit-line-clamp: 4;
-                -webkit-box-orient: vertical;
+
+                @include line-clamp(4);
             }
         }
 
@@ -59,7 +57,7 @@ h1 {
 }
 
 h2 {
-    color: #BB2652;
+    color: #bb2652;
     font-weight: bold;
 }
 
