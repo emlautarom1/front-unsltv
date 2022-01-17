@@ -15,13 +15,14 @@ SwiperCore.use([Navigation]);
 })
 export class ContentSliderComponent implements OnInit {
   @Input() playlist!: Playlist;
+  videosLength = 25;
 
   videos!: Observable<Video[]>;
 
   constructor(private youtube: YoutubeService) { }
 
   ngOnInit(): void {
-    this.videos = this.youtube.getVideosForPlaylist(this.playlist.id, 25);
+    this.videos = this.youtube.getVideosForPlaylist(this.playlist.id, this.videosLength);
   }
 
   backgroundImage(url?: string) {

@@ -57,6 +57,9 @@
 
 .swiper-slide {
     transition: transform 150ms;
+    // TODO: Ajustar con media-query
+    // TODO: 27% para 720p, 17% para 1080p
+    width: 17.5%;
 }
 
 .swiper:focus-within .swiper-slide,
