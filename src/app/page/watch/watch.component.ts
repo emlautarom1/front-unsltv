@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { YoutubeService } from 'src/app/service/youtube.service';
-import { map, mergeMap, Observable } from 'rxjs';
+import { map, mergeMap, Observable, share } from 'rxjs';
 import { Video } from 'src/app/model/video';
 
 @Component({
@@ -24,7 +24,7 @@ export class WatchComponent implements OnInit {
   ngOnInit(): void {
     let videoID = this.route.paramMap.pipe(map(m => m.get("id") ?? ""))
 
-    this.video = videoID.pipe(mergeMap(id => this.youtube.getVideoByID(id)))
+    this.video = videoID.pipe(mergeMap(id => this.youtube.getVideoByID(id)), share())
     this.videoURL = videoID.pipe(
       map(v => `https://www.youtube.com/embed/${v}`),
       map(url => this.domSanitizer.bypassSecurityTrustResourceUrl(url))
