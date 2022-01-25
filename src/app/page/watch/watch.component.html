@@ -27,9 +27,7 @@
     <h2>Tal vez te interese...</h2>
 
     <div class="cards">
-        <app-media-card *ngFor="let r of related$ | async" [id]="r.contentDetails.videoId" [title]="r.snippet.title"
-            [category]="r.snippet.categoryId | youtubeCategory" [date]="r.snippet.publishedAt | localDate"
-            [thumbnail]="r.snippet.thumbnails.default?.url ?? ''" [description]="r.snippet.description">
-        </app-media-card>
+        <app-video-card *ngFor="let video of related$ | async" [video]="video">
+        </app-video-card>
     </div>
 </div>

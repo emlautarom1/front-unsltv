@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MediaCardComponent } from './media-card.component';
+import { VideoCardComponent } from './video-card.component';
 
-describe('MediaCardComponent', () => {
-  let component: MediaCardComponent;
-  let fixture: ComponentFixture<MediaCardComponent>;
+describe('VideoCardComponent', () => {
+  let component: VideoCardComponent;
+  let fixture: ComponentFixture<VideoCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MediaCardComponent ]
+      declarations: [ VideoCardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MediaCardComponent);
+    fixture = TestBed.createComponent(VideoCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

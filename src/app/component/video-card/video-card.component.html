@@ -1,0 +1,11 @@
+<div class="card">
+    <a [routerLink]="['/watch', video.contentDetails.videoId]">
+        <img [src]="thumbnailURL" alt="thumbnail">
+        <div class="text">
+            <h3 class="title">{{ video.snippet.title }}</h3>
+            <h5 class="date">{{ video.snippet.publishedAt | date }} &mdash; {{ video.snippet.categoryId |
+                youtubeCategory }}</h5>
+            <p class="description">{{ video.snippet.description }}</p>
+        </div>
+    </a>
+</div>

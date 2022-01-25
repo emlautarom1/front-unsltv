@@ -9,7 +9,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { FooterComponent } from './component/footer/footer.component';
-import { MediaCardComponent } from './component/media-card/media-card.component';
+import { VideoCardComponent } from './component/video-card/video-card.component';
 
 import { ContentSliderComponent } from './page/home/content-slider/content-slider.component';
 import { ContentHeroComponent } from './page/home/content-hero/content-hero.component';
@@ -31,7 +31,7 @@ import { YoutubeCategoryPipe } from './pipe/youtube-category.pipe';
     ContentHeroComponent,
     AboutComponent,
     SearchComponent,
-    MediaCardComponent,
+    VideoCardComponent,
     WatchComponent,
     NotFoundComponent,
     LocalDatePipe,

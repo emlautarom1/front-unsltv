@@ -11,6 +11,8 @@
 
     img {
         width: 100%;
+        max-height: 225px;
+        object-fit: cover;
     }
 }
 
@@ -30,7 +32,11 @@ a {
     flex-direction: column;
     gap: 0.5rem;
 
-    p {
+    .title {
+        @include line-clamp(1);
+    }
+
+    .description {
         line-height: 1.3rem;
 
         @include line-clamp(4);
