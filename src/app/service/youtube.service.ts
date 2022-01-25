@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { EMPTY, expand, first, from, map, mergeMap, Observable, share, take, tap } from 'rxjs';
 import { Playlist } from '../model/playlist';
 import { Video } from '../model/video';
 
@@ -8,36 +8,27 @@ import { Video } from '../model/video';
   providedIn: 'root'
 })
 export class YoutubeService {
+  private allVideosPlaylistID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
+  private maxResultsLimit: number = 50;
 
-  constructor(private http: HttpClient) { }
+  allPlaylists$: Observable<Playlist>;
+  allVideos$: Observable<Video>;
+  latestVideo$: Observable<Video>;
 
-  private _sampleSingleContent(): any {
-    let idx = Math.round((Math.random() * 10) % 7) + 1;
-    return {
-      id: "X40Tr3Q-BvE",
-      thumbnail: `assets/thumbnails/small-movie${idx}.jpg`,
-      title: "La Casa de Papel",
-      date: "28/8/20",
-      category: "Entretenimiento",
-      views: "7.893.163",
-      description: "Una banda organizada de ladrones se propone cometer el atraco del siglo en la Fábrica Nacional de Moneda y Timbre. Cinco meses de preparación quedarán reducidos a once días para poder llevar a cabo con éxito el gran golpe."
-    }
+  constructor(private http: HttpClient) {
+    this.allPlaylists$ = this.getAllPlaylists();
+    this.allVideos$ = this.getVideosForPlaylist(this.allVideosPlaylistID).pipe(share());
+    this.latestVideo$ = this.allVideos$.pipe(first(), share());
   }
 
-  private _sampleArrayContent(): any[] {
-    return Array.from({ length: 10 }, () => this._sampleSingleContent());
-  }
-
-  searchContent(query: string): Observable<any[]> {
-    return of(this._sampleArrayContent());
-  }
-
-  relatedContent(to: string): Observable<any[]> {
-    return of(this._sampleArrayContent());
-  }
-
-  findRelatedTo(id: string): Observable<any[]> {
-    return of(this._sampleArrayContent())
+  getVideosForPlaylist(playlistID: string): Observable<Video> {
+    let url = "https://youtube.googleapis.com/youtube/v3/playlistItems"
+    let params = new HttpParams()
+      .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
+      .set("part", "snippet,contentDetails")
+      .set("maxResults", this.maxResultsLimit)
+      .set("playlistId", playlistID)
+    return this.depaginateGET<Video>(url, params);
   }
 
   getVideoByID(id: string): Observable<Video> {
@@ -47,37 +38,38 @@ export class YoutubeService {
       .set("part", "snippet,contentDetails,statistics")
       .set("id", id);
     return this.http.get(url, { params }).pipe(
-      map((response: any) => response.items[0])
+      map((response: any) => response.items[0] ?? undefined)
     )
   }
 
-  getVideosForPlaylist(playlistID: string, maxResults: number): Observable<Video[]> {
-    let url = "https://youtube.googleapis.com/youtube/v3/playlistItems"
-    let params = new HttpParams()
-      .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
-      .set("part", "snippet,contentDetails")
-      .set("maxResults", maxResults)
-      .set("playlistId", playlistID)
-    return this.http.get(url, { params }).pipe(
-      map((response: any) => response.items)
-    )
+  searchFor(query: string): Observable<Video> {
+    // TODO: Usar implementacion real
+    return this.allVideos$.pipe(take(10));
   }
 
-  getPlaylists(maxResults: number): Observable<Playlist[]> {
+  findRelatedVideosTo(id: string): Observable<Video> {
+    // TODO: Usar implementacion real
+    return this.allVideos$.pipe();
+  }
+
+  private getAllPlaylists(): Observable<Playlist> {
     let url = "https://youtube.googleapis.com/youtube/v3/playlists"
     let params = new HttpParams()
       .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
-      .set("part", "snippet,contentDetails")
+      .set("part", "snippet,contentDetails,status")
       .set("channelId", "UCZZWwoQL1ZpRU-8hdsrUpew")
-      .set("maxResults", maxResults)
-    return this.http.get(url, { params }).pipe(
-      map((response: any) => response.items as Playlist[])
-    )
+      .set("maxResults", this.maxResultsLimit)
+    return this.depaginateGET<Playlist>(url, params);
   }
 
-  getLatestVideo(): Observable<Video> {
-    let allVideosPlaylistID = "UUZZWwoQL1ZpRU-8hdsrUpew";
-    return this.getVideosForPlaylist(allVideosPlaylistID, 1)
-      .pipe(map(videos => videos[0]))
+  private depaginateGET<T>(url: string, params: HttpParams, itemsProp: string = "items"): Observable<T> {
+    const fetchSinglePage = (pageToken?: string): Observable<T> => {
+      return this.http.get(url, { params: pageToken ? params.set("pageToken", pageToken) : params }).pipe(
+        expand((response: any) => response["nextPageToken"] ? fetchSinglePage(response["nextPageToken"]) : EMPTY),
+        tap(() => console.log(`HTTP request: url = ${url}, pageToken = ${pageToken}`)),
+        mergeMap((response: any) => from(response[itemsProp]) as Observable<T>)
+      )
+    }
+    return fetchSinglePage()
   }
 }
