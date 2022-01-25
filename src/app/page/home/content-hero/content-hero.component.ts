@@ -13,14 +13,14 @@ export class ContentHeroComponent implements OnInit {
   faPlayCircle = faPlayCircle;
   faInfoCircle = faInfoCircle;
 
-  featuredVideo!: Observable<Video>;
-  backgroundStyle!: Observable<{ 'background-image': string; }>;
+  featuredVideo$!: Observable<Video>;
+  backgroundStyle$!: Observable<{ 'background-image': string; }>;
 
   constructor(private youtube: YoutubeService) { }
 
   ngOnInit(): void {
-    this.featuredVideo = this.youtube.getLatestVideo().pipe(share());
-    this.backgroundStyle = this.featuredVideo.pipe(
+    this.featuredVideo$ = this.youtube.latestVideo$;
+    this.backgroundStyle$ = this.featuredVideo$.pipe(
       map(video => {
         let gradient = "360deg, #111 0%, rgba(255, 255, 255, 0) 25%";
         // TODO: Utilizar un placeholder real

@@ -1,11 +1,11 @@
-<div class="hero" [ngStyle]="backgroundStyle | async">
-    <div class="info">
+<div class="hero" [ngStyle]="backgroundStyle$ | async">
+    <div class="info" *ngIf="featuredVideo$ | async as featuredVideo">
         <div class="title">
-            {{ (featuredVideo | async)?.snippet?.title }}
+            {{ featuredVideo.snippet?.title }}
         </div>
-        <div class="description">{{ (featuredVideo | async)?.snippet?.description }}</div>
+        <div class="description">{{ featuredVideo.snippet?.description }}</div>
         <div class="play-now">
-            <button [routerLink]="['/watch', (featuredVideo | async)?.contentDetails?.videoId]">
+            <button [routerLink]="['/watch', featuredVideo.contentDetails?.videoId]">
                 <fa-icon [icon]="faPlayCircle" size="lg"></fa-icon>
                 Ver Ahora
             </button>

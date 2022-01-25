@@ -17,7 +17,7 @@
     </div>
 
     <div class="result-grid">
-        <app-media-card *ngFor="let result of results | async" [id]="result.id" [title]="result.title"
+        <app-media-card *ngFor="let result of results$ | async" [id]="result.id" [title]="result.title"
             [category]="result.category" [date]="result.date" [thumbnail]="result.thumbnail"
             [description]="result.description"></app-media-card>
     </div>

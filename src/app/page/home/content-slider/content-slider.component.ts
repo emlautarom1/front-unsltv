@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, take, toArray } from "rxjs";
 import { Playlist } from "src/app/model/playlist";
 import { Video } from "src/app/model/video";
 import { YoutubeService } from "src/app/service/youtube.service";
@@ -17,12 +17,15 @@ export class ContentSliderComponent implements OnInit {
   @Input() playlist!: Playlist;
   videosLength = 25;
 
-  videos!: Observable<Video[]>;
+  videos$!: Observable<Video[]>;
 
   constructor(private youtube: YoutubeService) { }
 
   ngOnInit(): void {
-    this.videos = this.youtube.getVideosForPlaylist(this.playlist.id, this.videosLength);
+    this.videos$ = this.youtube.getVideosForPlaylist(this.playlist.id).pipe(
+      take(this.videosLength),
+      toArray()
+    );
   }
 
   backgroundImage(url?: string) {

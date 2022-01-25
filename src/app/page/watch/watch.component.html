@@ -1,22 +1,22 @@
-<div class="watch">
-    <h1>{{ (video | async)?.snippet?.title }}</h1>
+<div class="watch" *ngIf="video$ | async as video">
+    <h1>{{ video.snippet?.title }}</h1>
 
     <div class="player-container">
         <div class="yt-player">
-            <iframe width="1280" height="720" [src]="videoURL | async" frameborder="0" allowfullscreen></iframe>
+            <iframe width="1280" height="720" [src]="videoURL$ | async" frameborder="0" allowfullscreen></iframe>
         </div>
         <div class="details">
             <div class="metadata">
                 <span class="date-category">
-                    {{ (video | async)?.snippet?.publishedAt | date }} &mdash; {{ (video | async)?.snippet?.categoryId |
+                    {{ video.snippet?.publishedAt | date }} &mdash; {{ video.snippet?.categoryId |
                     youtubeCategory }}
                 </span>
                 <span class="viewcount">
-                    {{ (video | async)?.statistics?.viewCount }} visualizaciones
+                    {{ video.statistics?.viewCount }} visualizaciones
                 </span>
             </div>
             <div class="description">
-                <p>{{ (video | async)?.snippet?.description }}</p>
+                <p>{{ video.snippet?.description }}</p>
             </div>
             <span class="view-more">
                 <a href="#">Ver Mas</a>
@@ -27,8 +27,9 @@
     <h2>Tal vez te interese...</h2>
 
     <div class="cards">
-        <app-media-card *ngFor="let related of relatedContent | async" [id]="related.id" [title]="related.title"
-            [category]="related.category" [date]="related.date" [thumbnail]="related.thumbnail"
-            [description]="related.description"></app-media-card>
+        <app-media-card *ngFor="let r of related$ | async" [id]="r.contentDetails.videoId" [title]="r.snippet.title"
+            [category]="r.snippet.categoryId | youtubeCategory" [date]="r.snippet.publishedAt | localDate"
+            [thumbnail]="r.snippet.thumbnails.default?.url ?? ''" [description]="r.snippet.description">
+        </app-media-card>
     </div>
 </div>

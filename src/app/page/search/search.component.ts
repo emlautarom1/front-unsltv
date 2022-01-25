@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { map, mergeMap, take, toArray } from 'rxjs/operators';
 import { YoutubeService } from 'src/app/service/youtube.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { YoutubeService } from 'src/app/service/youtube.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  results!: Observable<any[]>;
+  results$!: Observable<any[]>;
 
   constructor(
     private route: ActivatedRoute,
@@ -18,10 +18,12 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.results = this.route.paramMap.pipe(
+    this.results$ = this.route.paramMap.pipe(
       map(m => m.get("query") ?? ""),
-      tap(query => console.log("query = ", query)),
-      mergeMap(query => this.youtube.searchContent(query)));
+      mergeMap(query => this.youtube.searchFor(query)),
+      take(10),
+      toArray()
+    );
   }
 
 }
