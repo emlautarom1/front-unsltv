@@ -1,10 +1,4 @@
-type Resolutions = "default" | "high" | "maxres" | "medium" | "standard"
-type Thumbnail = {
-    url: string,
-    width: number,
-    height: number,
-}
-type Thumbnails = Partial<Record<Resolutions, Thumbnail>>
+import { Thumbnails } from "./thumbnail";
 
 export interface Video {
     etag: string,
