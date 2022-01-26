@@ -9,8 +9,9 @@ import { Video } from '../model/video';
   providedIn: 'root'
 })
 export class YoutubeService {
-  private allVideosPlaylistID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
-  private maxResultsLimit: number = 50;
+  private BASE_URL = "https://youtube.googleapis.com/youtube/v3";
+  private ALL_VIDEOS_PLAYLIST_ID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
+  private MAX_RESULTS_LIMIT: number = 50;
 
   allPlaylists$: Observable<Playlist>;
   allVideos$: Observable<Video>;
@@ -19,22 +20,22 @@ export class YoutubeService {
   constructor(private http: HttpClient, private search: FuzzySearchService) {
     this.allPlaylists$ = this.getAllPlaylists().pipe(shareReplay());
     // TODO: Ver por que no se comparten los datos entre paginas
-    this.allVideos$ = this.getVideosForPlaylist(this.allVideosPlaylistID).pipe(shareReplay());
+    this.allVideos$ = this.getVideosForPlaylist(this.ALL_VIDEOS_PLAYLIST_ID).pipe(shareReplay());
     this.latestVideo$ = this.allVideos$.pipe(first());
   }
 
   getVideosForPlaylist(playlistID: string): Observable<Video> {
-    let url = "https://youtube.googleapis.com/youtube/v3/playlistItems"
+    let url = this.BASE_URL + "/playlistItems"
     let params = new HttpParams()
       .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
       .set("part", "snippet,contentDetails")
-      .set("maxResults", this.maxResultsLimit)
+      .set("maxResults", this.MAX_RESULTS_LIMIT)
       .set("playlistId", playlistID)
     return this.depaginateGET<Video>(url, params);
   }
 
   getVideoByID(id: string): Observable<Video> {
-    let url = "https://youtube.googleapis.com/youtube/v3/videos";
+    let url = this.BASE_URL + "/videos";
     let params = new HttpParams()
       .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
       .set("part", "snippet,contentDetails,statistics")
@@ -56,12 +57,12 @@ export class YoutubeService {
   }
 
   private getAllPlaylists(): Observable<Playlist> {
-    let url = "https://youtube.googleapis.com/youtube/v3/playlists"
+    let url = this.BASE_URL + "/playlists"
     let params = new HttpParams()
       .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
       .set("part", "snippet,contentDetails,status")
       .set("channelId", "UCZZWwoQL1ZpRU-8hdsrUpew")
-      .set("maxResults", this.maxResultsLimit)
+      .set("maxResults", this.MAX_RESULTS_LIMIT)
     return this.depaginateGET<Playlist>(url, params);
   }
 
