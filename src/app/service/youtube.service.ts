@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FuzzySearchService } from './fuzzy-search.service';
-import { EMPTY, expand, filter, first, from, map, mergeMap, Observable, share, tap } from 'rxjs';
+import { EMPTY, expand, filter, first, from, map, mergeMap, Observable, shareReplay, tap } from 'rxjs';
 import { Playlist } from '../model/playlist';
 import { Video } from '../model/video';
 
@@ -17,9 +17,9 @@ export class YoutubeService {
   latestVideo$: Observable<Video>;
 
   constructor(private http: HttpClient, private search: FuzzySearchService) {
-    this.allPlaylists$ = this.getAllPlaylists();
+    this.allPlaylists$ = this.getAllPlaylists().pipe(shareReplay());
     // TODO: Ver por que no se comparten los datos entre paginas
-    this.allVideos$ = this.getVideosForPlaylist(this.allVideosPlaylistID).pipe(share());
+    this.allVideos$ = this.getVideosForPlaylist(this.allVideosPlaylistID).pipe(shareReplay());
     this.latestVideo$ = this.allVideos$.pipe(first());
   }
 
@@ -67,6 +67,7 @@ export class YoutubeService {
 
   private depaginateGET<T>(url: string, params: HttpParams, itemsProp: string = "items"): Observable<T> {
     const fetchSinglePage = (pageToken?: string) => {
+      // TODO: Usar peticiones HTTP en cache
       return this.http.get(url, { params: pageToken ? params.set("pageToken", pageToken) : params }).pipe(
         tap(() => console.log("HTTP request:", { url, params, pageToken }))
       )
