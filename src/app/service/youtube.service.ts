@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, expand, first, from, map, mergeMap, Observable, share, take, tap } from 'rxjs';
+import { EMPTY, expand, first, from, map, mergeMap, Observable, share, tap } from 'rxjs';
 import { Playlist } from '../model/playlist';
 import { Video } from '../model/video';
 
@@ -17,8 +17,9 @@ export class YoutubeService {
 
   constructor(private http: HttpClient) {
     this.allPlaylists$ = this.getAllPlaylists();
+    // TODO: Ver por que no se comparten los datos entre paginas
     this.allVideos$ = this.getVideosForPlaylist(this.allVideosPlaylistID).pipe(share());
-    this.latestVideo$ = this.allVideos$.pipe(first(), share());
+    this.latestVideo$ = this.allVideos$.pipe(first());
   }
 
   getVideosForPlaylist(playlistID: string): Observable<Video> {
@@ -44,12 +45,12 @@ export class YoutubeService {
 
   searchFor(query: string): Observable<Video> {
     // TODO: Usar implementacion real
-    return this.allVideos$.pipe(take(10));
+    return this.allVideos$;
   }
 
   findRelatedVideosTo(id: string): Observable<Video> {
     // TODO: Usar implementacion real
-    return this.allVideos$.pipe();
+    return this.allVideos$;
   }
 
   private getAllPlaylists(): Observable<Playlist> {
@@ -63,13 +64,15 @@ export class YoutubeService {
   }
 
   private depaginateGET<T>(url: string, params: HttpParams, itemsProp: string = "items"): Observable<T> {
-    const fetchSinglePage = (pageToken?: string): Observable<T> => {
+    const fetchSinglePage = (pageToken?: string) => {
       return this.http.get(url, { params: pageToken ? params.set("pageToken", pageToken) : params }).pipe(
-        expand((response: any) => response["nextPageToken"] ? fetchSinglePage(response["nextPageToken"]) : EMPTY),
-        tap(() => console.log(`HTTP request: url = ${url}, pageToken = ${pageToken}`)),
-        mergeMap((response: any) => from(response[itemsProp]) as Observable<T>)
+        tap(() => console.log("HTTP request:", { url, params, pageToken }))
       )
     }
-    return fetchSinglePage()
+
+    return fetchSinglePage().pipe(
+      expand((response: any) => response["nextPageToken"] ? fetchSinglePage(response["nextPageToken"]) : EMPTY),
+      mergeMap((response: any) => from(response[itemsProp]) as Observable<T>)
+    )
   }
 }
