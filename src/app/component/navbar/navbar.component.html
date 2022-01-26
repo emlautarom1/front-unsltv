@@ -6,8 +6,8 @@
         <nav class="nav">
             <ul>
                 <li><a routerLink="/">Inicio</a></li>
-                <li><a routerLink="/search/institucional">Institucional</a></li>
-                <li><a routerLink="/search/live">En Vivo</a></li>
+                <li><a routerLink="/search" [queryParams]="{ playlist: 'institutional' }">Institucional</a></li>
+                <li><a routerLink="/search" [queryParams]="{ playlist: 'live' }">En Vivo</a></li>
                 <li><a routerLink="/about">Nosotrxs</a></li>
             </ul>
         </nav>

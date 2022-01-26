@@ -4,6 +4,7 @@ import { FuzzySearchService } from './fuzzy-search.service';
 import { EMPTY, expand, filter, first, from, map, mergeMap, Observable, shareReplay, tap } from 'rxjs';
 import { Playlist } from '../model/playlist';
 import { Video } from '../model/video';
+import { SearchParams } from '../model/search';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,10 @@ export class YoutubeService {
   private API_KEY = "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ";
 
   private ALL_VIDEOS_PLAYLIST_ID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
+  private INSTITUTIONAL_PLAYLIST_ID: string = "PLPHjzCOfwhCU8wJYO-SazoXjbzYV780UE";
+  // TODO: No hay playlist automatica de transmisiones en vivo?
+  private LIVE_PLAYLIST_ID: string = "PLPHjzCOfwhCU8wJYO-SazoXjbzYV780UE";
+
   private MAX_RESULTS_LIMIT: number = 50;
 
   allPlaylists$: Observable<Playlist>;
@@ -47,10 +52,17 @@ export class YoutubeService {
     )
   }
 
-  searchFor(query: string): Observable<Video> {
-    return this.allVideos$.pipe(
-      filter(v => this.search.matchesVideo(query, v))
-    );
+  searchFor(search: SearchParams): Observable<Video> {
+    switch (search.playlist) {
+      case 'institutional':
+        return this.getVideosForPlaylist(this.INSTITUTIONAL_PLAYLIST_ID);
+      case 'live':
+        return this.getVideosForPlaylist(this.LIVE_PLAYLIST_ID);
+      default:
+        return this.allVideos$.pipe(
+          filter(v => this.search.matchesVideo(search.query ?? "", v))
+        );
+    }
   }
 
   findRelatedVideosTo(id: string): Observable<Video> {

@@ -33,6 +33,6 @@ export class NavbarComponent implements OnInit {
   onSubmit() {
     // TODO: Prevenir navegacion cuando la query está vacía.
     const query = this.searchForm.value.query
-    this.router.navigate(["/search", query]);
+    this.router.navigate(["/search"], { queryParams: { query }});
   }
 }
