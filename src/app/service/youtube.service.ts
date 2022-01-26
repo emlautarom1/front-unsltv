@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, expand, first, from, map, mergeMap, Observable, share, tap } from 'rxjs';
+import { FuzzySearchService } from './fuzzy-search.service';
+import { EMPTY, expand, filter, first, from, map, mergeMap, Observable, share, tap } from 'rxjs';
 import { Playlist } from '../model/playlist';
 import { Video } from '../model/video';
 
@@ -15,7 +16,7 @@ export class YoutubeService {
   allVideos$: Observable<Video>;
   latestVideo$: Observable<Video>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private search: FuzzySearchService) {
     this.allPlaylists$ = this.getAllPlaylists();
     // TODO: Ver por que no se comparten los datos entre paginas
     this.allVideos$ = this.getVideosForPlaylist(this.allVideosPlaylistID).pipe(share());
@@ -44,8 +45,9 @@ export class YoutubeService {
   }
 
   searchFor(query: string): Observable<Video> {
-    // TODO: Usar implementacion real
-    return this.allVideos$;
+    return this.allVideos$.pipe(
+      filter(v => this.search.matchesVideo(query, v))
+    );
   }
 
   findRelatedVideosTo(id: string): Observable<Video> {
