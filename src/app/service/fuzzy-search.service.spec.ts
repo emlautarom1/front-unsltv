@@ -15,21 +15,15 @@ describe('FuzzySearchService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('matches on a video title', () => {
-    let video = { snippet: { title: "This is a test video", description: "" } }
-    let matches = service.matchesVideo("test", video as Video);
-    expect(matches).toBeTrue();
-  });
-
-  it('matches on a video description', () => {
-    let video = { snippet: { title: "", description: "This is a test description" } }
-    let matches = service.matchesVideo("test", video as Video);
+  it('matches with some query', () => {
+    let video = { snippet: { title: 'Gabriel "Cocó" Orozco | Comuna Charla', description: "" } }
+    let matches = service.matchesVideo("comuna charla", video as Video);
     expect(matches).toBeTrue();
   });
 
   it('does not match with some query', () => {
-    let video = { snippet: { title: "A title", description: "A description" } }
-    let matches = service.matchesVideo("egypt", video as Video);
+    let video = { snippet: { title: "Charla Gabriel Eduardo Ojeda Fosaro", description: "A description" } }
+    let matches = service.matchesVideo("comuna charla", video as Video);
     expect(matches).toBeFalse();
   });
 });

@@ -11,7 +11,8 @@ export class FuzzySearchService {
 
   matchesVideo(query: string, video: Video): boolean {
     const fuse = new Fuse([video], {
-      keys: ["snippet.title", "snippet.description"],
+      keys: ["snippet.title"],
+      threshold: 0.4
     })
     let matches = fuse.search(query);
     return matches.length > 0
