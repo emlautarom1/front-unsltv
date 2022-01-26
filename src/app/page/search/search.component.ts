@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, mergeMap, take, toArray } from 'rxjs/operators';
+import { map, switchMap, take, tap, toArray } from 'rxjs/operators';
 import { Video } from 'src/app/model/video';
 import { YoutubeService } from 'src/app/service/youtube.service';
 
@@ -21,9 +21,10 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.results$ = this.route.paramMap.pipe(
       map(m => m.get("query") ?? ""),
-      mergeMap(query => this.youtube.searchFor(query)),
-      take(10),
-      toArray()
+      tap(query => console.log("query: " + query)),
+      // TODO: Por ahora mostramos solo los primeros 10 resultados
+      // En un futuro evaluar la posibilidad de agregar paginación (botón de 'Mas resultados')
+      switchMap(query => this.youtube.searchFor(query).pipe(take(10), toArray()))
     );
   }
 
