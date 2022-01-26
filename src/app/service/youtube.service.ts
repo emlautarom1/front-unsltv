@@ -9,7 +9,10 @@ import { Video } from '../model/video';
   providedIn: 'root'
 })
 export class YoutubeService {
-  private BASE_URL = "https://youtube.googleapis.com/youtube/v3";
+  // TODO: Cargar desde ENV
+  private BASE_URL = "http://localhost:3000";
+  private API_KEY = "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ";
+
   private ALL_VIDEOS_PLAYLIST_ID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
   private MAX_RESULTS_LIMIT: number = 50;
 
@@ -19,7 +22,6 @@ export class YoutubeService {
 
   constructor(private http: HttpClient, private search: FuzzySearchService) {
     this.allPlaylists$ = this.getAllPlaylists().pipe(shareReplay());
-    // TODO: Ver por que no se comparten los datos entre paginas
     this.allVideos$ = this.getVideosForPlaylist(this.ALL_VIDEOS_PLAYLIST_ID).pipe(shareReplay());
     this.latestVideo$ = this.allVideos$.pipe(first());
   }
@@ -27,7 +29,7 @@ export class YoutubeService {
   getVideosForPlaylist(playlistID: string): Observable<Video> {
     let url = this.BASE_URL + "/playlistItems"
     let params = new HttpParams()
-      .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
+      .set("key", this.API_KEY)
       .set("part", "snippet,contentDetails")
       .set("maxResults", this.MAX_RESULTS_LIMIT)
       .set("playlistId", playlistID)
@@ -37,7 +39,7 @@ export class YoutubeService {
   getVideoByID(id: string): Observable<Video> {
     let url = this.BASE_URL + "/videos";
     let params = new HttpParams()
-      .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
+      .set("key", this.API_KEY)
       .set("part", "snippet,contentDetails,statistics")
       .set("id", id);
     return this.http.get(url, { params }).pipe(
@@ -59,7 +61,7 @@ export class YoutubeService {
   private getAllPlaylists(): Observable<Playlist> {
     let url = this.BASE_URL + "/playlists"
     let params = new HttpParams()
-      .set("key", "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ")
+      .set("key", this.API_KEY)
       .set("part", "snippet,contentDetails,status")
       .set("channelId", "UCZZWwoQL1ZpRU-8hdsrUpew")
       .set("maxResults", this.MAX_RESULTS_LIMIT)
@@ -68,7 +70,6 @@ export class YoutubeService {
 
   private depaginateGET<T>(url: string, params: HttpParams, itemsProp: string = "items"): Observable<T> {
     const fetchSinglePage = (pageToken?: string) => {
-      // TODO: Usar peticiones HTTP en cache
       return this.http.get(url, { params: pageToken ? params.set("pageToken", pageToken) : params }).pipe(
         tap(() => console.log("HTTP request:", { url, params, pageToken }))
       )
