@@ -3,17 +3,24 @@
         <div class="title">
             <h1>{{ title$ | async }}</h1>
         </div>
-        <div class="filters">
-            <select name="order-by" id="order-by">
-                <option hidden selected>Ordenar por</option>
+        <!-- TODO: Agregar labels a los controles -->
+        <!-- No queda claro para que sirve cada control -->
+        <form class="controls" [formGroup]="controlsForm">
+            <select name="sort-by" id="sort-by" formControlName="sortBy">
+                <option value="publishedAt">Fecha de subida</option>
+                <option value="title">Título</option>
             </select>
-            <select name="date" id="date">
-                <option hidden selected>Fecha</option>
+
+            <select name="filterDate" id="filterDate" formControlName="filterDate">
+                <option value="any">Todo</option>
+                <option value="hour">Última hora</option>
+                <option value="day">Hoy</option>
+                <option value="week">Esta semana</option>
+                <option value="month">Este mes</option>
+                <option value="year">Este año</option>
             </select>
-            <select name="duration" id="duration">
-                <option hidden selected>Duración</option>
-            </select>
-        </div>
+
+        </form>
     </div>
 
     <div class="result-grid">
