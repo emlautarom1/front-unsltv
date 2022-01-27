@@ -1,3 +1,5 @@
+@import "src/mixins.scss";
+
 .search {
     margin-top: 80px;
     padding: 2rem;
@@ -11,8 +13,9 @@
     flex-direction: row;
     justify-content: space-between;
 
-    h1 {
+    .title {
         color: white;
+        @include line-clamp(1);
     }
 }
 
