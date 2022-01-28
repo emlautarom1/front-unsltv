@@ -3,16 +3,15 @@
         <div class="title">
             <h1>{{ title$ | async }}</h1>
         </div>
-        <!-- TODO: Agregar labels a los controles -->
-        <!-- No queda claro para que sirve cada control -->
+
         <form class="controls" [formGroup]="controlsForm">
             <select name="sort-by" id="sort-by" formControlName="sortBy">
-                <option value="publishedAt">Fecha de subida</option>
-                <option value="title">Título</option>
+                <option value="publishedAt">Más Recientes</option>
+                <option value="title">Por Título</option>
             </select>
 
             <select name="filterDate" id="filterDate" formControlName="filterDate">
-                <option value="any">Todo</option>
+                <option value="any">Cualquier fecha</option>
                 <option value="day">Hoy</option>
                 <option value="week">Este semana</option>
                 <option value="month">Este mes</option>
