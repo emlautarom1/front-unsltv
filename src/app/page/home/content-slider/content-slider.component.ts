@@ -15,7 +15,7 @@ SwiperCore.use([Navigation]);
 })
 export class ContentSliderComponent implements OnInit {
   @Input() playlist!: Playlist;
-  videosLength = 25;
+  maxNumOfVideos = 25;
 
   videos$!: Observable<Video[]>;
 
@@ -23,7 +23,7 @@ export class ContentSliderComponent implements OnInit {
 
   ngOnInit(): void {
     this.videos$ = this.youtube.getVideosForPlaylist(this.playlist.id).pipe(
-      take(this.videosLength),
+      take(this.maxNumOfVideos),
       toArray()
     );
   }

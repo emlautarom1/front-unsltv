@@ -1,11 +1,11 @@
-<div class="content-slider-container">
+<div class="content-slider-container" *ngIf="videos$ | async as videos">
     <h1 class="title">{{ playlist.snippet.title }}</h1>
 
     <!-- TODO: Cantidad de slides deberia depender del tamaño de la pantalla -->
     <swiper [navigation]="true" [slidesPerView]="'auto'" [spaceBetween]="10" [centeredSlides]="true" [loop]="true"
-        [loopedSlides]="videosLength" [initialSlide]="2" class="swiper">
+        [loopedSlides]="videos.length" [initialSlide]="2" class="swiper">
 
-        <ng-template swiperSlide *ngFor="let v of videos$ | async">
+        <ng-template swiperSlide *ngFor="let v of videos">
             <div class="slide-container" [ngStyle]="backgroundImage(v.snippet.thumbnails.high?.url)">
                 <a [routerLink]="['/watch', v.contentDetails.videoId]">
                     <div class="slide-content">
