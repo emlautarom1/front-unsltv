@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
-import { map, shareReplay, startWith, switchMap, take, tap, toArray } from 'rxjs/operators';
+import { map, shareReplay, startWith, switchMap, take, toArray } from 'rxjs/operators';
 import { SearchParams } from 'src/app/model/search';
 import { Video } from 'src/app/model/video';
 import { Controls } from '../../model/video-search-controls'
@@ -37,7 +37,6 @@ export class SearchComponent implements OnInit {
 
     const search$ = this.route.queryParamMap.pipe(
       map(params => { return { playlist: params.get("playlist"), query: params.get("query") } as SearchParams }),
-      tap(search => console.log(search)),
       shareReplay(1)
     );
 
