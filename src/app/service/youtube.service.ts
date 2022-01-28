@@ -91,7 +91,15 @@ export class YoutubeService {
       .set("part", "snippet,contentDetails,status")
       .set("channelId", "UCZZWwoQL1ZpRU-8hdsrUpew")
       .set("maxResults", this.MAX_RESULTS_LIMIT)
-    return this.depaginateGET<Playlist>(url, params);
+    return this.depaginateGET<Playlist>(url, params).pipe(
+      filter(playlist => !this.isSpecialPlaylist(playlist.id))
+    );
+  }
+
+  private isSpecialPlaylist(playlistID: string): boolean {
+    return playlistID === this.ALL_VIDEOS_PLAYLIST_ID
+      || playlistID === this.INSTITUTIONAL_PLAYLIST_ID
+      || playlistID === this.LIVE_PLAYLIST_ID;
   }
 
   private depaginateGET<T>(url: string, params: HttpParams, itemsProp: string = "items"): Observable<T> {
