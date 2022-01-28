@@ -53,12 +53,14 @@ export class SearchComponent implements OnInit {
     }));
 
     this.results$ = combineLatest([search$, controls$]).pipe(
-      switchMap(([search, controls]) => this.youtube.searchFor(search).pipe(
-        // TODO: Por ahora mostramos solo los primeros 10 resultados
-        // En un futuro evaluar la posibilidad de agregar paginación (botón de 'Mas resultados')
-        take(10), toArray(),
-        map(videos => videos.sort(this.controlsBuilder.buildVideoComparator(controls.sortBy)))
-      ))
+      switchMap(([search, controls]) => {
+        return this.youtube.searchFor(search, controls.filterDate).pipe(
+          // TODO: Por ahora mostramos solo los primeros 10 resultados
+          // En un futuro evaluar la posibilidad de agregar paginación (botón de 'Mas resultados')
+          take(10), toArray(),
+          map(videos => videos.sort(this.controlsBuilder.buildVideoComparator(controls.sortBy)))
+        )
+      })
     );
   }
 

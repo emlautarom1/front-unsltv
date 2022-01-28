@@ -1,10 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FuzzySearchService } from './fuzzy-search.service';
 import { EMPTY, expand, filter, first, from, map, mergeMap, Observable, shareReplay, tap } from 'rxjs';
+import { FuzzySearchService } from './fuzzy-search.service';
+import { VideoSearchControlsService } from './video-search-controls.service';
 import { Playlist } from '../model/playlist';
 import { Video } from '../model/video';
 import { SearchParams } from '../model/search';
+import { FilterDate } from '../model/video-search-controls';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,11 @@ export class YoutubeService {
   allVideos$: Observable<Video>;
   latestVideo$: Observable<Video>;
 
-  constructor(private http: HttpClient, private search: FuzzySearchService) {
+  constructor(
+    private http: HttpClient,
+    private search: FuzzySearchService,
+    private controls: VideoSearchControlsService
+  ) {
     this.allPlaylists$ = this.getAllPlaylists().pipe(shareReplay());
     this.allVideos$ = this.getVideosForPlaylist(this.ALL_VIDEOS_PLAYLIST_ID).pipe(shareReplay());
     this.latestVideo$ = this.allVideos$.pipe(first());
@@ -52,17 +58,25 @@ export class YoutubeService {
     )
   }
 
-  searchFor(search: SearchParams): Observable<Video> {
+  searchFor(search: SearchParams, filterDate: FilterDate): Observable<Video> {
+    const filterDatePredicate = this.controls.buildVideoFilterByDate(filterDate);
+
+    let results: Observable<Video>;
     switch (search.playlist) {
       case 'institutional':
-        return this.getVideosForPlaylist(this.INSTITUTIONAL_PLAYLIST_ID);
+        results = this.getVideosForPlaylist(this.INSTITUTIONAL_PLAYLIST_ID);
+        break;
       case 'live':
-        return this.getVideosForPlaylist(this.LIVE_PLAYLIST_ID);
+        results = this.getVideosForPlaylist(this.LIVE_PLAYLIST_ID);
+        break;
       default:
-        return this.allVideos$.pipe(
+        results = this.allVideos$.pipe(
           filter(v => this.search.matchesVideo(search.query ?? "", v))
         );
     }
+    return results.pipe(
+      filter(v => filterDatePredicate(v))
+    );
   }
 
   findRelatedVideosTo(id: string): Observable<Video> {
