@@ -20,10 +20,11 @@ export class VideoSearchControlsService {
     switch (by) {
       case 'publishedAt':
         return (a, b) =>
-          this.compare(new Date(a.contentDetails.videoPublishedAt), new Date(b.contentDetails.videoPublishedAt))
+          // El orden está invertido para obtener 'Mas Reciente' primero
+          this.compare(new Date(b.contentDetails.videoPublishedAt), new Date(a.contentDetails.videoPublishedAt))
       case 'title':
         return (a, b) =>
-          this.compare(new Date(a.snippet.title), new Date(b.snippet.title))
+          this.compare(a.snippet.title, b.snippet.title)
     }
   }
 
