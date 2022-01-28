@@ -5,8 +5,9 @@ import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, startWith, switchMap, take, tap, toArray } from 'rxjs/operators';
 import { SearchParams } from 'src/app/model/search';
 import { Video } from 'src/app/model/video';
-import { Controls, SortBy } from './search-controls'
+import { Controls } from '../../model/video-search-controls'
 import { YoutubeService } from 'src/app/service/youtube.service';
+import { VideoSearchControlsService } from 'src/app/service/video-search-controls.service';
 
 @Component({
   selector: 'app-search',
@@ -26,6 +27,7 @@ export class SearchComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
+    private controlsBuilder: VideoSearchControlsService,
     private youtube: YoutubeService
   ) { }
 
@@ -55,25 +57,9 @@ export class SearchComponent implements OnInit {
         // TODO: Por ahora mostramos solo los primeros 10 resultados
         // En un futuro evaluar la posibilidad de agregar paginación (botón de 'Mas resultados')
         take(10), toArray(),
-        map(videos => videos.sort(this.sortBy(controls.sortBy)))
+        map(videos => videos.sort(this.controlsBuilder.buildVideoComparator(controls.sortBy)))
       ))
     );
   }
 
-  sortBy(by: SortBy): (a: Video, b: Video) => number {
-    function compare<T>(a: T, b: T) {
-      if (a < b) { return -1; }
-      if (a > b) { return 1; }
-      return 0;
-    }
-
-    switch (by) {
-      case 'publishedAt':
-        return (a, b) =>
-          compare(new Date(a.contentDetails.videoPublishedAt), new Date(b.contentDetails.videoPublishedAt))
-      case 'title':
-        return (a, b) =>
-          compare(new Date(a.snippet.title), new Date(b.snippet.title))
-    }
-  }
 }
