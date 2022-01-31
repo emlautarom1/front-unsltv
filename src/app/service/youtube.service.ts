@@ -79,9 +79,11 @@ export class YoutubeService {
     );
   }
 
-  findRelatedVideosTo(id: string): Observable<Video> {
-    // TODO: Usar implementacion real
-    return this.allVideos$;
+  findRelatedVideosTo(video: Video): Observable<Video> {
+    let title = video.snippet.title;
+    return this.allVideos$.pipe(
+      filter(v => this.search.matchesVideo(title, v))
+    );
   }
 
   private getAllPlaylists(): Observable<Playlist> {
