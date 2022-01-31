@@ -10,13 +10,13 @@ export class FuzzySearchService {
 
   constructor() { }
 
-  matchesVideo(query: string, video: Video, threshold: number = 0.4): boolean {
+  matchesVideo(query: string, video: Video): boolean {
     // Elimina caracteres no alfanuméricos
     let cleanQuery = query.replace(this.REGEX, " ");
 
     const fuse = new Fuse([video], {
       keys: ["snippet.title"],
-      threshold
+      threshold: 0.4
     })
     let matches = fuse.search(cleanQuery);
     return matches.length > 0

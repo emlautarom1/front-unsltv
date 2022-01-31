@@ -82,7 +82,7 @@ export class YoutubeService {
   findRelatedVideosTo(video: Video): Observable<Video> {
     let title = video.snippet.title;
     return this.allVideos$.pipe(
-      filter(v => this.search.matchesVideo(title, v, 0.6)),
+      filter(v => this.search.matchesVideo(title, v)),
       filter(v => v.contentDetails.videoId != video.id),
     );
   }
