@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Video } from 'src/app/model/video';
+import { VideoThumbnailService } from 'src/app/service/video-thumbnail.service';
 
 @Component({
   selector: 'app-video-card',
@@ -11,12 +12,10 @@ export class VideoCardComponent implements OnInit {
   video!: Video
   thumbnailURL: string = ""
 
-  constructor() { }
+  constructor(private thumbnails: VideoThumbnailService) { }
 
   ngOnInit(): void {
-    // TODO: Extraer lógica a servicio
-    let thumbnails = this.video.snippet.thumbnails;
-    this.thumbnailURL = thumbnails.maxres?.url ?? thumbnails.high?.url ?? ""
+    this.thumbnailURL = this.thumbnails.getVideoThumbnail(this.video).url;
   }
 
 }

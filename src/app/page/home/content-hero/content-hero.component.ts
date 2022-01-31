@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { faPlayCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { map, Observable } from 'rxjs';
 import { YoutubeService } from 'src/app/service/youtube.service';
-import { map, Observable, share } from 'rxjs';
+import { VideoThumbnailService } from 'src/app/service/video-thumbnail.service';
 import { Video } from 'src/app/model/video';
 
 @Component({
@@ -16,19 +17,18 @@ export class ContentHeroComponent implements OnInit {
   featuredVideo$!: Observable<Video>;
   backgroundStyle$!: Observable<{ 'background-image': string; }>;
 
-  constructor(private youtube: YoutubeService) { }
+  constructor(
+    private youtube: YoutubeService,
+    private thumbnails: VideoThumbnailService
+  ) { }
 
   ngOnInit(): void {
     this.featuredVideo$ = this.youtube.latestVideo$;
     this.backgroundStyle$ = this.featuredVideo$.pipe(
       map(video => {
         let gradient = "360deg, #111 0%, rgba(255, 255, 255, 0) 25%";
-        // TODO: Utilizar un placeholder real
-        let thumbnail =
-          video.snippet.thumbnails.maxres?.url
-          ?? video.snippet.thumbnails.high?.url
-          ?? "assets/thumbnails/banner.jpg";
-        return { 'background-image': `linear-gradient(${gradient}), url('${thumbnail}')` }
+        let thumbnailURL = this.thumbnails.getVideoThumbnail(video).url;
+        return { 'background-image': `linear-gradient(${gradient}), url('${thumbnailURL}')` }
       })
     );
   }

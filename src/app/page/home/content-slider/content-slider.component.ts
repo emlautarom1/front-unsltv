@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
 import { Observable, take, toArray } from "rxjs";
 import { Playlist } from "src/app/model/playlist";
 import { Video } from "src/app/model/video";
+import { VideoThumbnailService } from "src/app/service/video-thumbnail.service";
 import { YoutubeService } from "src/app/service/youtube.service";
 import SwiperCore, { Navigation } from "swiper";
 
@@ -19,7 +20,10 @@ export class ContentSliderComponent implements OnInit {
 
   videos$!: Observable<Video[]>;
 
-  constructor(private youtube: YoutubeService) { }
+  constructor(
+    private youtube: YoutubeService,
+    private thumbnails: VideoThumbnailService
+  ) { }
 
   ngOnInit(): void {
     this.videos$ = this.youtube.getVideosForPlaylist(this.playlist.id).pipe(
@@ -28,8 +32,9 @@ export class ContentSliderComponent implements OnInit {
     );
   }
 
-  backgroundImage(url?: string) {
-    // TODO: Utilizar un placeholder real
-    return { "background-image": `url(${url ?? "assets/thumbnails/small-movie1.jpg"})` }
+  videoThumbnailToBackgroundImage(video: Video): { 'background-image': string } {
+    let url = this.thumbnails.getVideoThumbnail(video).url;
+    return { "background-image": `url(${url})` }
   }
+
 }
