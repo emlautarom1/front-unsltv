@@ -11,7 +11,7 @@ import { distinctUntilChanged, fromEvent, map, Observable, startWith } from 'rxj
 })
 export class NavbarComponent implements OnInit {
   searchIcon: IconDefinition = faSearch;
-  didScroll!: Observable<boolean>;
+  didScroll$!: Observable<boolean>;
   searchForm!: FormGroup;
 
   constructor(
@@ -20,10 +20,11 @@ export class NavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.didScroll = fromEvent(window, "scroll").pipe(
+    this.didScroll$ = fromEvent(window, "scroll").pipe(
       startWith(false),
       map(() => window.scrollY > 50),
-      distinctUntilChanged());
+      distinctUntilChanged()
+    );
 
     this.searchForm = this.formBuilder.group({
       'query': ""
