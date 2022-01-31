@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { EMPTY, expand, filter, first, from, map, mergeMap, Observable, shareReplay, tap } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { FuzzySearchService } from './fuzzy-search.service';
 import { VideoSearchControlsService } from './video-search-controls.service';
 import { Playlist } from '../model/playlist';
@@ -12,9 +13,8 @@ import { FilterDate } from '../model/video-search-controls';
   providedIn: 'root'
 })
 export class YoutubeService {
-  // TODO: Cargar desde ENV
-  private BASE_URL = "http://localhost:3000";
-  private API_KEY = "AIzaSyCHGA00PnSkBfyB60g2TS2U-ICPuJeHaHQ";
+  private BASE_URL = environment.backend_url;
+  private API_KEY = environment.youtube_api_key
 
   private ALL_VIDEOS_PLAYLIST_ID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
   private INSTITUTIONAL_PLAYLIST_ID: string = "PLPHjzCOfwhCU8wJYO-SazoXjbzYV780UE";
