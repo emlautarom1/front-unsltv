@@ -26,13 +26,14 @@ export class NavbarComponent implements OnInit {
       distinctUntilChanged());
 
     this.searchForm = this.formBuilder.group({
-      "query": ""
+      'query': ""
     });
   }
 
   onSubmit() {
-    // TODO: Prevenir navegacion cuando la query está vacía.
-    const query = this.searchForm.value.query
-    this.router.navigate(["/search"], { queryParams: { query }});
+    const query: string = this.searchForm.value.query;
+    if (query.trim() != "") {
+      this.router.navigate(["/search"], { queryParams: { query } });
+    }
   }
 }
