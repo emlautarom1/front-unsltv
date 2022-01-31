@@ -1,4 +1,5 @@
 <app-content-hero></app-content-hero>
 
+<!-- TODO: Solo los sliders que estan en viewport deben renderizarse -->
 <app-content-slider *ngFor="let playlist of playlists$ | async" [playlist]="playlist">
 </app-content-slider>
