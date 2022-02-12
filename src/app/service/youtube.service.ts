@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, EMPTY, expand, filter, first, from, map, mergeMap, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, expand, filter, first, from, identity, map, mergeMap, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FuzzySearchService } from './fuzzy-search.service';
 import { VideoSearchControlsService } from './video-search-controls.service';
@@ -14,7 +14,8 @@ import { FilterDate } from '../model/video-search-controls';
 })
 export class YoutubeService {
   private BASE_URL = environment.backend_url;
-  private API_KEY = environment.youtube_api_key
+  private API_KEY = environment.youtube_api_key;
+  private DEBUG = !environment.production;
 
   private ALL_VIDEOS_PLAYLIST_ID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
   private INSTITUTIONAL_PLAYLIST_ID: string = "PLPHjzCOfwhCU8wJYO-SazoXjbzYV780UE";
@@ -132,7 +133,7 @@ export class YoutubeService {
   private depaginateGET<T>(url: string, params: HttpParams, itemsProp: string = "items"): Observable<T> {
     const fetchSinglePage = (pageToken?: string) => {
       return this.http.get(url, { params: pageToken ? params.set("pageToken", pageToken) : params }).pipe(
-        tap(() => console.log("HTTP request:", { url, params, pageToken }))
+        this.DEBUG ? tap(() => console.log("HTTP request:", { url, params, pageToken })) : identity
       )
     }
 
