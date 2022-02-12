@@ -39,18 +39,22 @@ h1 {
 
         .description {
             line-height: 1.3rem;
+            padding-bottom: 1rem;
         }
 
         .description-clamp {
             @include line-clamp(4);
+            padding-bottom: 0rem;
         }
 
         .view-more a {
             color: inherit;
             font-weight: bold;
             text-decoration: none;
+            text-transform: uppercase;
             cursor: pointer;
             outline: inherit;
+            font-size: small;
             opacity: 0.5;
         }
     }
