@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EMPTY, expand, filter, first, from, map, mergeMap, Observable, shareReplay, tap } from 'rxjs';
+import { catchError, EMPTY, expand, filter, first, from, map, mergeMap, Observable, of, shareReplay, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FuzzySearchService } from './fuzzy-search.service';
 import { VideoSearchControlsService } from './video-search-controls.service';
@@ -18,14 +18,12 @@ export class YoutubeService {
 
   private ALL_VIDEOS_PLAYLIST_ID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
   private INSTITUTIONAL_PLAYLIST_ID: string = "PLPHjzCOfwhCU8wJYO-SazoXjbzYV780UE";
-  // TODO: No hay playlist automatica de transmisiones en vivo?
-  private LIVE_PLAYLIST_ID: string = "PLPHjzCOfwhCU8wJYO-SazoXjbzYV780UE";
 
   private MAX_RESULTS_LIMIT: number = 50;
 
   allPlaylists$: Observable<Playlist>;
   allVideos$: Observable<Video>;
-  latestVideo$: Observable<Video>;
+  featuredVideo$: Observable<Video>;
 
   constructor(
     private http: HttpClient,
@@ -34,7 +32,7 @@ export class YoutubeService {
   ) {
     this.allPlaylists$ = this.getAllPlaylists().pipe(shareReplay());
     this.allVideos$ = this.getVideosForPlaylist(this.ALL_VIDEOS_PLAYLIST_ID).pipe(shareReplay());
-    this.latestVideo$ = this.allVideos$.pipe(first());
+    this.featuredVideo$ = this.getFeaturedVideo().pipe(shareReplay());
   }
 
   getVideosForPlaylist(playlistID: string): Observable<Video> {
@@ -44,6 +42,16 @@ export class YoutubeService {
       .set("part", "snippet,contentDetails")
       .set("maxResults", this.MAX_RESULTS_LIMIT)
       .set("playlistId", playlistID)
+    return this.depaginateGET<Video>(url, params);
+  }
+
+  private getCompletedBroadcasts(): Observable<Video> {
+    let url = this.BASE_URL + "/liveBroadcasts";
+    let params = new HttpParams()
+      .set("key", this.API_KEY)
+      .set("part", "id,snippet,contentDetails")
+      .set("maxResults", this.MAX_RESULTS_LIMIT)
+      .set("broadcastStatus", "completed")
     return this.depaginateGET<Video>(url, params);
   }
 
@@ -67,7 +75,8 @@ export class YoutubeService {
         results = this.getVideosForPlaylist(this.INSTITUTIONAL_PLAYLIST_ID);
         break;
       case 'live':
-        results = this.getVideosForPlaylist(this.LIVE_PLAYLIST_ID);
+        // TODO: reemplazar con `this.getCompletedBroadcasts()` cuando se utilice la clave de UNSL TV
+        results = this.getVideosForPlaylist(this.INSTITUTIONAL_PLAYLIST_ID);
         break;
       default:
         results = this.allVideos$.pipe(
@@ -100,9 +109,24 @@ export class YoutubeService {
   }
 
   private isSpecialPlaylist(playlistID: string): boolean {
-    return playlistID === this.ALL_VIDEOS_PLAYLIST_ID
-      || playlistID === this.INSTITUTIONAL_PLAYLIST_ID
-      || playlistID === this.LIVE_PLAYLIST_ID;
+    return playlistID === this.INSTITUTIONAL_PLAYLIST_ID
+  }
+
+  private getFeaturedVideo(): Observable<Video> {
+    let url = this.BASE_URL + "/liveBroadcasts";
+    let params = new HttpParams()
+      .set("key", this.API_KEY)
+      .set("part", "id,snippet,contentDetails")
+      .set("maxResults", this.MAX_RESULTS_LIMIT)
+      .set("broadcastStatus", "active")
+
+    let activeBroadcast$ = this.http.get(url, { params }).pipe(
+      map((response: any) => (response.items[0] ?? undefined) as Video | undefined),
+      catchError(_ => of(undefined))
+    );
+    let latestVideo$ = this.allVideos$.pipe(first());
+
+    return activeBroadcast$.pipe(switchMap(ab => ab ? of(ab) : latestVideo$));
   }
 
   private depaginateGET<T>(url: string, params: HttpParams, itemsProp: string = "items"): Observable<T> {

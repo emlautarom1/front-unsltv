@@ -23,7 +23,7 @@ export class ContentHeroComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.featuredVideo$ = this.youtube.latestVideo$;
+    this.featuredVideo$ = this.youtube.featuredVideo$;
     this.backgroundStyle$ = this.featuredVideo$.pipe(
       map(video => {
         let gradient = "360deg, #111 0%, rgba(255, 255, 255, 0) 25%";
