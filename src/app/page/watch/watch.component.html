@@ -15,11 +15,13 @@
                     {{ video.statistics?.viewCount }} visualizaciones
                 </span>
             </div>
-            <div class="description">
+            <div class="description" [class.description-clamp]="clampedDescription$ | async">
                 <p>{{ video.snippet?.description }}</p>
             </div>
             <span class="view-more">
-                <a href="#">Ver Mas</a>
+                <a (click)="toggleButtonEvent$.next($event)">
+                    {{ (clampedDescription$ | async) ? "Ver Mas" : "Ver Menos" }}
+                </a>
             </span>
         </div>
     </div>

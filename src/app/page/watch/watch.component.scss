@@ -38,11 +38,11 @@ h1 {
         }
 
         .description {
-            p {
-                line-height: 1.3rem;
+            line-height: 1.3rem;
+        }
 
-                @include line-clamp(4);
-            }
+        .description-clamp {
+            @include line-clamp(4);
         }
 
         .view-more a {

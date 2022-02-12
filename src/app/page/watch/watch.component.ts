@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { YoutubeService } from 'src/app/service/youtube.service';
-import { map, mergeMap, Observable, shareReplay, take, toArray } from 'rxjs';
+import { map, mapTo, mergeMap, Observable, scan, shareReplay, startWith, Subject, take, toArray } from 'rxjs';
 import { Video } from 'src/app/model/video';
 
 @Component({
@@ -15,6 +15,9 @@ export class WatchComponent implements OnInit {
   videoURL$!: Observable<SafeResourceUrl>;
   related$!: Observable<Video[]>;
 
+  toggleButtonEvent$: Subject<Event> = new Subject();
+  clampedDescription$!: Observable<boolean>;
+
   constructor(
     private route: ActivatedRoute,
     private youtube: YoutubeService,
@@ -22,6 +25,12 @@ export class WatchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.clampedDescription$ = this.toggleButtonEvent$.pipe(
+      mapTo(true),
+      startWith(true),
+      scan(current => !current)
+    );
+
     let videoID$ = this.route.paramMap.pipe(
       map(m => m.get("id") ?? ""),
       shareReplay()
