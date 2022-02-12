@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(private youtube: YoutubeService) { }
 
   ngOnInit(): void {
-    this.playlists$ = this.youtube.allPlaylists$.pipe(take(5), toArray());
+    this.playlists$ = this.youtube.allPlaylists$.pipe(take(10), toArray());
   }
 
 }
