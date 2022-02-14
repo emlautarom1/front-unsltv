@@ -6,7 +6,7 @@
         <div class="description">{{ featuredVideo.snippet?.description }}</div>
         <div class="play-now">
             <button [routerLink]="['/watch', featuredVideo.contentDetails?.videoId]">
-                <fa-icon [icon]="faPlayCircle" size="lg"></fa-icon>
+                <fa-icon [icon]="playIcon" size="lg"></fa-icon>
                 Ver Ahora
             </button>
         </div>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router"
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { IconDefinition, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { distinctUntilChanged, fromEvent, map, Observable, startWith } from 'rxjs';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +10,7 @@ import { distinctUntilChanged, fromEvent, map, Observable, startWith } from 'rxj
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  searchIcon: IconDefinition = faSearch;
+  searchIcon = faSearch;
   didScroll$!: Observable<boolean>;
   searchForm!: FormGroup;
 
