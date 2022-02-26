@@ -19,6 +19,7 @@ export class YoutubeService {
 
   private ALL_VIDEOS_PLAYLIST_ID: string = "UUZZWwoQL1ZpRU-8hdsrUpew";
   private INSTITUTIONAL_PLAYLIST_ID: string = "PLPHjzCOfwhCU8wJYO-SazoXjbzYV780UE";
+  private LIVESTREAM_PLAYLIST_ID: string = "PLPHjzCOfwhCXnZAwbzO735syU8gTrpxdL";
 
   private MAX_RESULTS_LIMIT: number = 50;
 
@@ -46,16 +47,6 @@ export class YoutubeService {
     return this.depaginateGET<Video>(url, params);
   }
 
-  private getCompletedBroadcasts(): Observable<Video> {
-    let url = this.BASE_URL + "/liveBroadcasts";
-    let params = new HttpParams()
-      .set("key", this.API_KEY)
-      .set("part", "id,snippet,contentDetails")
-      .set("maxResults", this.MAX_RESULTS_LIMIT)
-      .set("broadcastStatus", "completed")
-    return this.depaginateGET<Video>(url, params);
-  }
-
   getVideoByID(id: string): Observable<Video> {
     let url = this.BASE_URL + "/videos";
     let params = new HttpParams()
@@ -76,8 +67,7 @@ export class YoutubeService {
         results = this.getVideosForPlaylist(this.INSTITUTIONAL_PLAYLIST_ID);
         break;
       case 'live':
-        // TODO: reemplazar con `this.getCompletedBroadcasts()` cuando se utilice la clave de UNSL TV
-        results = this.getVideosForPlaylist(this.INSTITUTIONAL_PLAYLIST_ID);
+        results = this.getVideosForPlaylist(this.LIVESTREAM_PLAYLIST_ID);
         break;
       default:
         results = this.allVideos$.pipe(
@@ -114,20 +104,18 @@ export class YoutubeService {
   }
 
   private getFeaturedVideo(): Observable<Video> {
-    let url = this.BASE_URL + "/liveBroadcasts";
-    let params = new HttpParams()
-      .set("key", this.API_KEY)
-      .set("part", "id,snippet,contentDetails")
-      .set("maxResults", this.MAX_RESULTS_LIMIT)
-      .set("broadcastStatus", "active")
-
-    let activeBroadcast$ = this.http.get(url, { params }).pipe(
-      map((response: any) => (response.items[0] ?? undefined) as Video | undefined),
-      catchError(_ => of(undefined))
+    let url = this.BASE_URL + "/liveBroadcast";
+    let activeBroadcast$ = this.http.get(url).pipe(
+      switchMap((response: any) =>
+        this.getVideoByID(response.videoId).pipe(catchError(_ => of(undefined)))
+      )
     );
+
     let latestVideo$ = this.allVideos$.pipe(first());
 
-    return activeBroadcast$.pipe(switchMap(ab => ab ? of(ab) : latestVideo$));
+    return activeBroadcast$.pipe(switchMap(ab =>
+      ab?.snippet.liveBroadcastContent == 'live' ? of(ab) : latestVideo$
+    ));
   }
 
   private depaginateGET<T>(url: string, params: HttpParams, itemsProp: string = "items"): Observable<T> {

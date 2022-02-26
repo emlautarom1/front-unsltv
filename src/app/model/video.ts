@@ -13,6 +13,7 @@ export interface Video {
         videoOwnerChannelTitle: string,
         videoOwnerChannelId: string,
         categoryId?: string,
+        liveBroadcastContent?: string
         playlistId: string,
         position: number,
         resourceId: {
