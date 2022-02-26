@@ -1,3 +1,5 @@
+@import "src/mixins.scss";
+
 .hero {
     height: 80vh;
     margin-bottom: 2rem;
@@ -23,11 +25,13 @@
     .title {
         font-size: 4rem;
         text-transform: uppercase;
+        @include line-clamp(2);
     }
 
     .description {
         line-height: 1.5rem;
         font-size: 1.2rem;
+        @include line-clamp(4);
     }
 
     .description,
