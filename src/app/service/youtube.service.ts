@@ -100,7 +100,8 @@ export class YoutubeService {
   }
 
   private isSpecialPlaylist(playlistID: string): boolean {
-    return playlistID === this.INSTITUTIONAL_PLAYLIST_ID
+    return playlistID == this.INSTITUTIONAL_PLAYLIST_ID
+      || playlistID == this.LIVESTREAM_PLAYLIST_ID;
   }
 
   private getFeaturedVideo(): Observable<Video> {
