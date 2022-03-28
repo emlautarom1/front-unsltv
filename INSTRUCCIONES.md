@@ -57,6 +57,12 @@ mkdir ../back-unsltv/static
 mkdir ../back-unsltv/cache
 ```
 
+Copiamos el front a la carpeta de recursos estáticos
+
+```
+cp -r dist/front-unsltv/* ../back-unsltv/static/
+```
+
 Habilitamos el puerto 80 para el back
 
 ```
