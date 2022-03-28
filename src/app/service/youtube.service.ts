@@ -108,7 +108,10 @@ export class YoutubeService {
     let url = this.BASE_URL + "/liveBroadcast";
     let activeBroadcast$ = this.http.get(url).pipe(
       switchMap((response: any) =>
-        this.getVideoByID(response.videoId).pipe(catchError(_ => of(undefined)))
+        this.getVideoByID(response.videoId).pipe(
+          tap(video => video['contentDetails']['videoId'] = response.videoId),
+          catchError(_ => of(undefined))
+        )
       )
     );
 
